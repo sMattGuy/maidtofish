@@ -101,6 +101,8 @@ function create_player()
  player.level = 1
  player.level_done = false
  player.combo = 0
+ player.best_combo = 0
+ player.fish_caught = 0
 end
 
 curr_fish = {}
@@ -139,6 +141,7 @@ end
 function process_input(button)
  if curr_fish.input_pattern[curr_fish.input_pos].input == button then
   player.combo += 1
+  player.best_combo = max(player.combo,player.best_combo)
   curr_fish.input_pattern[curr_fish.input_pos].result = 1
   curr_fish.progress = curr_fish.progress + 6 - curr_fish.diff_mod
   player.score += curr_fish.diff_mod
@@ -186,8 +189,10 @@ function check_progress()
   curr_fish.progress = 95
   curr_fish.active = false
   curr_fish.winner = true
+  player.fish_caught += 1
   player.level_done = true
-  player.score = player.score + (curr_fish.diff_mod * 5)
+  local time_bonus = flr(curr_fish.time_left/((curr_fish.diff_mod * 4 + 10)*30))
+  player.score = time_bonus + player.score + (curr_fish.diff_mod * 5)
   sfx(2)
   explode(100,80,water_drops,10)
   for i=0,5 do
@@ -228,7 +233,7 @@ function next_level()
 end
 -->8
 -- gameplay draw
-diff_text = {"easy","regular","tough","hard","insane"}
+diff_text = {"easy","normal","hard","lunatic","ex"}
 function draw_progress()
  -- background
  rectfill(0,0,128,18,6)
@@ -618,7 +623,9 @@ function draw_endscreen()
  sspr(26,1,3,1,30,67) -- mouth
  print("game over",50,10,0)
  print("final score:"..player.score,50,20,0)
- print("press \"z\"\nto restart",50,30,0)
+ print(player.fish_caught.."/"..max_levels.." caught",50,30,0)
+ print("best combo:"..player.best_combo,50,40,0)
+ print("press \"z\"\nto restart",50,50,0)
 end
 -->8
 -- fish directory
