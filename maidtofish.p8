@@ -51,8 +51,12 @@ function _update()
    music(1)
   elseif btnp(0) then
    curr_fish.diff_mod = max(1,curr_fish.diff_mod-1)
+   gen_fish()
+   curr_fish.active = false
   elseif btnp(1) then
    curr_fish.diff_mod = min(5,curr_fish.diff_mod+1)
+   gen_fish()
+   curr_fish.active = false
   elseif btnp(2) then
    max_levels = min(99,max_levels+1)
   elseif btnp(3) then
@@ -137,7 +141,7 @@ function process_input(button)
   player.combo += 1
   curr_fish.input_pattern[curr_fish.input_pos].result = 1
   curr_fish.progress = curr_fish.progress + 6 - curr_fish.diff_mod
-  player.score += 1 * curr_fish.diff_mod
+  player.score += curr_fish.diff_mod
   explode(108,31,good_hit,3)
   if player.combo >= 5 then
    add_txt(96,28,rnd(5)+10,-1,-1,true,{0},player.combo.."x")
@@ -145,7 +149,7 @@ function process_input(button)
   sfx(0)
  else
   curr_fish.progress = max(curr_fish.progress - curr_fish.diff_mod,0)
-  player.score -= max(1 * curr_fish.diff_mod,0)
+  player.score = max(player.score-curr_fish.diff_mod,0)
   explode(108,31,bad_hit,3)
   if player.combo >= 5 then
    add_txt(90,28,rnd(5)+10,-2,-1,true,{8},"combo\nlost!")
