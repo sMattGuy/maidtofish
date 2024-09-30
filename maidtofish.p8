@@ -191,7 +191,7 @@ function check_progress()
   curr_fish.winner = true
   player.fish_caught += 1
   player.level_done = true
-  local time_bonus = flr(curr_fish.time_left/((curr_fish.diff_mod * 4 + 10)*30))
+  local time_bonus = flr((curr_fish.time_left/((curr_fish.diff_mod * 4 + 10)*30))*100)
   player.score = time_bonus + player.score + (curr_fish.diff_mod * 5)
   sfx(2)
   explode(100,80,water_drops,10)
