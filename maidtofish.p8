@@ -473,7 +473,7 @@ function draw_fx()
   end
  end
  for fx in all(txt_fx) do
-  print(fx.text,fx.x,fx.y,fx.col)
+  print(fx.text,fx.x-((#fx.text-1)*4)+5,fx.y,fx.col)
  end
 end
 
